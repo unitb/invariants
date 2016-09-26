@@ -2,9 +2,9 @@
         , TemplateHaskell
         , ImplicitParams
         , ConstraintKinds #-}
-module Control.Precondition 
-    ( module Control.Precondition 
-    , module Data.Maybe 
+module Control.Precondition
+    ( module Control.Precondition
+    , module Data.Maybe
     , module Data.Either.Combinators
     , Loc(..) )
 where
@@ -13,7 +13,7 @@ import Control.Exception
 import Control.Exception.Assert (assertMessage)
 import Control.Lens
 
-import Data.Either.Combinators hiding 
+import Data.Either.Combinators hiding
         ( fromRight',fromLeft'
         , mapLeft,mapRight
         , mapBoth, isRight, isLeft )
@@ -25,11 +25,11 @@ import GHC.Stack.Utils
 import Language.Haskell.TH
 import Language.Haskell.TH.Syntax
 
+import Language.Haskell.TH.Lift.Deriving
+
 import PseudoMacros
 
 import Text.Printf
-
-import GHC.Generics.Instances ()
 
 fromJust' :: Pre => Maybe a -> a
 fromJust' (Just x)   = x
@@ -49,11 +49,11 @@ nonEmpty' :: Pre => [a] -> NonEmpty a
 nonEmpty' (x : xs) = x :| xs
 nonEmpty' []    = assertFalse' "empty list cast as non empty"
 
-(!) :: (Pre, Ixed m) 
+(!) :: (Pre, Ixed m)
     => m -> Index m -> IxValue m
 (!) m x = fromJust' $ m^?ix x
 
-byPred :: (Show x,Pre) 
+byPred :: (Show x,Pre)
        => String -> (x -> Bool) -> x -> a -> a
 byPred msg p x = providedMessage' ?loc "byPred" (msg ++ "\n" ++ show x) (p x)
 
@@ -94,7 +94,7 @@ provided = provided' ?loc
 
 
 provided' :: CallStack -> Bool -> a -> a
-provided' cs b = assertMessage "Precondition" 
+provided' cs b = assertMessage "Precondition"
         (fromMaybe "" $ stackTrace [$__FILE__] cs) (assert b)
 
 providedMessage' :: CallStack -> String -> String -> Bool -> a -> a
@@ -112,3 +112,6 @@ withLoc :: Name -> ExpQ
 withLoc fun = do
     loc <- location
     [e| $(varE fun) $(lift loc) |]
+
+instance Lift Loc where
+    lift = genericLift
