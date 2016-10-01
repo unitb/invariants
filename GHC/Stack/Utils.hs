@@ -1,5 +1,5 @@
-{-# LANGUAGE TemplateHaskell #-}
-module GHC.Stack.Utils 
+{-# LANGUAGE CPP #-}
+module GHC.Stack.Utils
     ( module GHC.Stack.Utils
     , module GHC.Stack )
 where
@@ -7,9 +7,11 @@ where
 import Data.Maybe
 
 import GHC.Stack
-import GHC.SrcLoc
 
-import PseudoMacros
+#if !(MIN_VERSION_base(4,9,0))
+import GHC.SrcLoc
+#endif
+
 
 import Text.Printf
 
@@ -20,7 +22,7 @@ getSrcLocs :: [FilePath] -> CallStack -> [(String,SrcLoc)]
 getSrcLocs fs cs = filter notHere $ getCallStack cs
     where
         notHere :: (a,SrcLoc) -> Bool
-        notHere (_,x) = srcLocFile x `notElem` $__FILE__:fs
+        notHere (_,x) = srcLocFile x `notElem` __FILE__:fs
 
 stackTrace :: [FilePath] -> CallStack -> Maybe String
 stackTrace fs cs | null loc  = Nothing

@@ -1,5 +1,5 @@
-{-# LANGUAGE StandaloneDeriving, TypeFamilies #-}
-module Control.Invariant 
+{-# LANGUAGE CPP, FlexibleInstances, StandaloneDeriving, TypeFamilies #-}
+module Control.Invariant
     ( HasInvariant(..), Checked, IsChecked(..)
     , mutate, mutate', create'
     , Controls(..)
@@ -34,8 +34,6 @@ import Data.Typeable
 
 import GHC.Stack.Utils
 
-import PseudoMacros
-
 import Test.QuickCheck hiding ((===))
 
 import Text.Printf.TH
@@ -46,11 +44,21 @@ newtype Checked a = Checked { getChecked :: a }
 instance Show a => Show (Checked a) where
     show (Checked x) = show x
 
+#if MIN_VERSION_transformers(0,5,0)
+instance Eq1 Checked where
+    liftEq f (Checked a) (Checked b) = a `f` b
+#else
 instance Eq1 Checked where
     eq1 (Checked a) (Checked b) = a == b
+#endif
 
+#if MIN_VERSION_transformers(0,5,0)
+instance Show1 Checked where
+    liftShowsPrec f _ i (Checked a) = f i a
+#else
 instance Show1 Checked where
     showsPrec1 = showsPrec
+#endif
 
 deriving instance Typeable Compose
 
@@ -222,4 +230,4 @@ create' :: (IsChecked c a,Default a,Pre) => State a k -> c
 create' = check . flip execState def 
 
 withStack :: CallStack -> InvariantM a -> InvariantM a
-withStack cs = maybe id withPrefix $ stackTrace [$__FILE__] cs
+withStack cs = maybe id withPrefix $ stackTrace [__FILE__] cs

@@ -47,7 +47,6 @@ packages:
 # (e.g., acme-missiles-0.3)
 extra-deps:
 - assert-0.0.1.2
-- pseudomacros-0.0.2
 
 # Override default flag values for local packages and extra-deps
 flags: {}

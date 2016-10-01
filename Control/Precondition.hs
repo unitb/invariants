@@ -1,5 +1,5 @@
 {-# LANGUAGE RankNTypes
-        , TemplateHaskell
+        , CPP
         , ImplicitParams
         , ConstraintKinds #-}
 module Control.Precondition
@@ -26,8 +26,6 @@ import Language.Haskell.TH
 import Language.Haskell.TH.Syntax
 
 import Language.Haskell.TH.Lift.Deriving
-
-import PseudoMacros
 
 import Text.Printf
 
@@ -95,11 +93,11 @@ provided = provided' ?loc
 
 provided' :: CallStack -> Bool -> a -> a
 provided' cs b = assertMessage "Precondition"
-        (fromMaybe "" $ stackTrace [$__FILE__] cs) (assert b)
+        (fromMaybe "" $ stackTrace [__FILE__] cs) (assert b)
 
 providedMessage' :: CallStack -> String -> String -> Bool -> a -> a
 providedMessage' cs tag msg b = assertMessage tag
-        (fromMaybe "" (stackTrace [$__FILE__] cs) ++ "\n" ++ msg) (assert b)
+        (fromMaybe "" (stackTrace [__FILE__] cs) ++ "\n" ++ msg) (assert b)
 
 providedM :: Pre => Bool -> m a -> m a
 providedM b cmd = do
