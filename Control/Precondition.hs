@@ -25,7 +25,7 @@ import GHC.Stack.Utils
 import Language.Haskell.TH
 import Language.Haskell.TH.Syntax
 
-import Language.Haskell.TH.Lift.Deriving
+import Language.Haskell.TH.Lift
 
 import Text.Printf
 
@@ -112,4 +112,4 @@ withLoc fun = do
     [e| $(varE fun) $(lift loc) |]
 
 instance Lift Loc where
-    lift = genericLift
+    lift = $(makeLift ''Loc)
