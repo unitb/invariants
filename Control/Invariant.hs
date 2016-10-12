@@ -16,7 +16,10 @@ module Control.Invariant
     , IsAssertion(..)
     , checkAssert
     , checkAssertM
-    , Invariant, (##) )
+    , Invariant, (##)
+    , member'
+    , isSubmapOf' 
+    , isProperSubmapOf' )
 where
 
 import Control.DeepSeq
@@ -29,6 +32,7 @@ import Data.Default
 import Data.Functor.Compose
 import Data.Functor.Classes
 import Data.List
+import Data.Map (isSubmapOf,isProperSubmapOf,Map,member)
 import Data.Set (isSubsetOf,isProperSubsetOf,Set)
 import Data.Typeable
 
@@ -202,6 +206,21 @@ isSubsetOf' = relation "/⊆" isSubsetOf
 
 isProperSubsetOf' :: (Ord a,Show a) => Set a -> Set a -> Invariant
 isProperSubsetOf' = relation "/⊂" isProperSubsetOf
+
+{-# INLINE isSubmapOf' #-}
+isSubmapOf' :: (Ord k,Eq k,Eq a,Show k,Show a) 
+            => Map k a -> Map k a -> Invariant
+isSubmapOf' = relation "/⊆" isSubmapOf
+
+{-# INLINE isProperSubmapOf' #-}
+isProperSubmapOf' :: (Eq k, Eq a,Ord k,Show k,Show a) 
+                  => Map k a -> Map k a -> Invariant
+isProperSubmapOf' = relation "/⊂" isProperSubmapOf
+
+{-# INLINE member' #-}
+member' :: (Show k,Show a,Ord k) 
+        => k -> Map k a -> Invariant
+member' = relation "/∈" member
 
 relation :: (Show a,Show b) 
          => String 
