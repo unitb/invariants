@@ -161,7 +161,7 @@ checkAssertM p msg = checkAssert p msg (return ())
 checkAssert :: (IsAssertion a,Pre) => a -> String -> b -> b
 checkAssert prop detail x = providedMessage' ?loc "Invariants" msg (null p) x
         where
-            msg = [printf|assertion failure: \n%s\n%s|] (intercalate "\n" p) (take 1000 detail)
+            msg = [s|assertion failure: \n%s\n%s|] (intercalate "\n" p) (take 1000 detail)
             p = invariantResults prop
 
 invariantResults :: IsAssertion a => a -> [String]
@@ -226,7 +226,7 @@ relation :: (Show a,Show b)
          => String 
          -> (a -> b -> Bool) 
          -> a -> b -> Invariant
-relation symb rel x y = [printf|%s %s %s|] (show x) symb (show y) ## (x `rel` y)
+relation symb rel x y = [s|%s %s %s|] (show x) symb (show y) ## (x `rel` y)
 
 class HasPrefix m where
     withPrefix :: String -> m a -> m a
