@@ -20,8 +20,8 @@ cache:
   - $HOME/.ghc
   - $HOME/.cabal
   - $HOME/.stack
-  - $HOME/literate-unitb/invariants/.stack-work/install
-  - $HOME/literate-unitb/invariants/.stack-work/downloaded
+  - $HOME/unitb/invariants/.stack-work/install
+  - $HOME/unitb/invariants/.stack-work/downloaded
   timeout: 1000
 
 # The different configurations we want to test. We have BUILD=cabal which uses
@@ -206,5 +206,5 @@ deploy:
   password:
     secure: Nk2NOGuUjk/5J7ETtzqcw/nk7slvZPTod2cqgnc/QkQTasZh8gVaT/Iq4WzBzSSyPP/1KiwGtC28xh83Yroxj1ek1Hcr7LMkpEdmFEShJBQcmz1nyBakTar2K5aGjRbCdCpAmqzwc60lAYKcgMS01DVffcmdNaeru8vlrtZJxRLoJm66rzdTKHKX3CBazXQ6Lhxck+f/YrrMlKWS4Fh1dKWu/+v15mKj4RIictAXbZCRfy1/bUj6J6LSU4VOKEW0Ts1GzderREZ+H2pJegiHG62p85boKqTcuYz5/Vkat5lbhqJcQTeqN2r5y2s7hBUofIRWnilhA+17oylsEqr9pOuKahnIFN1jp2y0gwTDRrxNYpXHsyveR9z5dUMIA/MxwID9300CuiQd3uBRNhqc66V6dYWGQk/nk024RBvVr58/ynQNPgW4wiLrCXGpMzysNbCDZt5DfXV+AIuHGGx/SJAG7mULRsyAixL9Txs6d+EeWN5BDyvRof92tM3XxKotZNF1VwzjCFOhxJ0sh15vbkiA+5xiOJWPRYoLU/99QZ5CGIY7bfcjFXXlkhnlS0WZEmO+NLSNrrnOT00/w1u1WSOvOFUrmG8/giQwmidH2LToNH4uwhwS+A1nEKAyZoaN8xJABkmxi4T7UZuXMuZtQitCfZq5OisxDcaJHPWCw3s=
   on:
-    repo: literate-unitb/invariants
+    repo: unitb/invariants
     tags: true
